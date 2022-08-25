@@ -1,11 +1,13 @@
 -- 테이블 초기화
 -- 테이블 초기화는 전부 외래키로 짜여저있어 순서대로 행해야함 
-DROP TABLE Reservation; -- 제일 상위의 테이블(모든 테이블의 외래키가 모여있음)
+DROP TABLE Reservation; -- 제일 상위의 테이블(모든 테이블의 외래키가 모여있음) // 수정되어서 없음
+
 DROP TABLE Payment; -- 제일 상위 바로 아랫단계 테이블(아래 3개의 테이블의 외래키가 모여있음)
 
-DROP TABLE Tp;
-DROP TABLE Travel;
-DROP TABLE Customer;
+DROP TABLE Tp;      -- 고객테이블을 외래키로 가지고 있는 이동수단 테이블
+DROP TABLE Travel;  -- 고객테이블을 외래키로 가지고 있는 여행지 테이블
+
+DROP TABLE Customer; -- 제일 하위의 고객테이블
 
 CREATE TABLE Customer(
 Customer_ID    NUMBER  PRIMARY KEY, 
@@ -17,7 +19,7 @@ Customer_Birth  VARCHAR2(40)
 );
 
 CREATE TABLE Travel(
-Travel_ID       NUMBER  PRIMARY KEY , 
+Travel_ID       NUMBER  PRIMARY KEY ,
 Travel_Location          VARCHAR2(40), 
 Travel_Place          VARCHAR2(40), 
 Travel_Food            VARCHAR2(40)
@@ -32,19 +34,12 @@ Tp_Price    NUMBER
 
 CREATE TABLE Payment(
 Payment_ID    NUMBER  PRIMARY KEY,
-Customer_ID    NUMBER UNIQUE,
+Customer_ID    NUMBER,
 Travel_ID   NUMBER,
 Tp_ID   NUMBER,
 CONSTRAINT FK_Customer_ID FOREIGN KEY(Customer_ID) REFERENCES Customer(Customer_ID),
 CONSTRAINT FK_Travel_ID FOREIGN KEY(Travel_ID) REFERENCES Travel(Travel_ID),
 CONSTRAINT FK_Tp_ID FOREIGN KEY(Tp_ID) REFERENCES Tp(Tp_ID)
-);
-
-CREATE TABLE Reservation(
-Reservation_No    NUMBER  PRIMARY KEY,
-Payment_ID    NUMBER UNIQUE,
-CONSTRAINT FK_Payment_ID FOREIGN KEY(Payment_ID) REFERENCES Payment(Payment_ID),
-Reservation_Date          DATE
 );
 
 insert into Customer values(1,'김승모','서울시 은평구','010-1234-0001','남',901122);
@@ -75,16 +70,9 @@ insert into Payment values(10004,4,102,1002);
 insert into Payment values(10005,5,102,1002);
 
 
-insert into Reservation values(1000001,10001,'2022-08-31');
-insert into Reservation values(1000002,10002,'2022-08-31');
-insert into Reservation values(1000003,10003,'2022-08-31');
-insert into Reservation values(1000004,10004,'2022-08-31');
-insert into Reservation values(1000005,10005,'2022-08-31');
-
 SELECT * FROM Customer;
 SELECT * FROM Travel;
 SELECT * FROM Tp;
 SELECT * FROM Payment;
-SELECT * FROM Reservation;
 
 commit;
