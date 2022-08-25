@@ -43,12 +43,10 @@ try {
 	conn = Util.getConnection();
 	stmt = conn.createStatement();
 	String sql = 
-			"select rs.Reservation_No, cs.Customer_ID, cs.Customer_Name, tr.place from reservation rs, customer cs, travel tr, Payment py where py.Customer_ID=cs.Customer_ID order by Customer_ID asc;";
+			"select rs.Reservation_No, cs.Customer_ID, cs.Customer_Name, tr.travel_place from reservation rs, customer cs, travel tr, Payment py where py.Customer_ID=cs.Customer_ID order by Customer_ID asc";
 	
 	ResultSet rs = stmt.executeQuery(sql);
 	while ( rs.next() ) {
-	}
-
 %>
 
 <tr>
@@ -56,13 +54,13 @@ try {
 <td> <%= rs.getString("Reservation_No") %> </td>
 <td> <%= rs.getString("Customer_ID") %> </td>
 <td> <%= rs.getString("Customer_Name") %> </td>
-<td> <%= rs.getString("place") %> </td>
+<td> <%= rs.getString("travel_place") %> </td>
 
 </tr>
 
 
 <%
-	
+	}
 }
 
 catch(Exception e) {
